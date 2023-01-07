@@ -1,0 +1,130 @@
+body {
+  margin:0;
+  padding: 0
+}
+
+#file {
+    display: none;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+
+.header-brand {
+  color: #000;
+  text-decoration: none;
+  font-size: 36px;
+}
+
+
+#middle-container{
+    width: 60%;
+    margin: 0 auto;
+}
+
+#drop-area {
+    width: 600px;
+    height: 400px;
+    border: 2px dashed #ccc;
+    line-height: 200px;
+    text-align: center;
+    margin: 0 auto 5vh;
+
+}
+
+#drop-area.dragging {
+    border-color: #000;
+}
+
+#drop-area.dragging #label {
+    display: none;
+}
+
+#drop-area .label {
+    font-size: 16px;
+    font-weight: bold;
+}
+/*----------------------------- Card Styles----------------------------------*/
+.card {
+    display: flex;
+    padding: 16px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 60%;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+  }
+  
+  .card-left {
+    flex: 0 0 200px;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+  }
+  hr {
+    color: #333;
+    width: 100%;
+  }
+    
+  .card-table,
+  .card-list {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  /* Table styles */
+  .card-table {
+    border-collapse: collapse;
+  }
+  
+  .card-table td {
+    padding: 5px;
+  }
+  
+  .card-label {
+    font-weight: bold;
+  }
+  
+  .card-value {
+    text-align: right;
+  }
+  
+  /* List styles */
+  .card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .card-list > li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .card-list > li:last-child {
+    border-bottom: none;
+  }
+  
