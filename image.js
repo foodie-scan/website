@@ -57,6 +57,9 @@ async function preview_image(fileImg) {
     return true;
   } catch (error) {
     console.log(error);
-    return false;
+    return {
+      img: userImg,
+      status: false,
+    };
   }
 }
