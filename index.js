@@ -6,6 +6,7 @@ dropArea.addEventListener("dragenter", handleDragEnter);
 dropArea.addEventListener("dragleave", handleDragLeave);
 dropArea.addEventListener("dragover", handleDragOver);
 dropArea.addEventListener("drop", handleDrop);
+input.addEventListener("onchange", handleDrop);
 
 var base64str;
 
