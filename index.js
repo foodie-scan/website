@@ -29,9 +29,11 @@ function handleDrop(e) {
   c = preview_image(fileList[0]);
   const dragSpan = document.getElementById("label");
   c.then((result) => {
+    console.log("result", result);
     if (result.status) {
       dragSpan.remove();
-      base64str = result.img;
+      console.log(result.img);
+      inference(result.img);
     } else {
       dragSpan.innerHTML = "Something went wrong, please try again";
     }
@@ -40,22 +42,4 @@ function handleDrop(e) {
 
 function updateNutritionCard(data) {
   //TODO: update card UI from new food and update in recent foods
-}
-
-async function inference(plantCoords, health) {
-  const payload = {
-    img: base64str,
-  };
-
-  const response = await fetch(apiEndpoint, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-  const nutritionData = await response.json();
-  console.log(nutritionData);
-  updateNutritionCard(nutritionData);
 }

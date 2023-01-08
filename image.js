@@ -54,11 +54,13 @@ async function preview_image(fileImg) {
     //display image in drop zone
     document.getElementById("preview").src = resized;
     document.getElementById("card-image").src = resized;
-    return true;
+    return {
+      img: userImg,
+      status: true,
+    };
   } catch (error) {
     console.log(error);
     return {
-      img: userImg,
       status: false,
     };
   }
