@@ -53,9 +53,9 @@ async function preview_image(fileImg) {
     const resized = await reduce_image_file_size(userImg);
     //display image in drop zone
     document.getElementById("preview").src = resized;
-    document.getElementById("card-image").src = resized;
     return {
       img: userImg,
+      resizedImg: resized,
       status: true,
     };
   } catch (error) {

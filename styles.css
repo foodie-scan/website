@@ -87,18 +87,18 @@ header {
     width: 100%;
   }
     
-  .card-table,
+  #card-table,
   .card-list {
     width: 100%;
     margin-top: 10px;
   }
   
   /* Table styles */
-  .card-table {
+  #card-table {
     border-collapse: collapse;
   }
   
-  .card-table td {
+  #card-table td {
     padding: 5px;
   }
   

@@ -17,5 +17,5 @@ async function inference(base64str) {
   );
   const nutritionData = await response.json();
   console.log(nutritionData);
-  // updateNutritionCard(nutritionData);
+  updateNutritionCard(nutritionData);
 }

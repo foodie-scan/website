@@ -1,5 +1,6 @@
 const dropArea = document.getElementById("drop-area");
 const input = document.getElementById("image-file");
+const dragSpan = document.getElementById("label");
 
 dropArea.addEventListener("dragenter", handleDragEnter);
 dropArea.addEventListener("dragleave", handleDragLeave);
@@ -26,13 +27,10 @@ function handleDrop(e) {
   e.preventDefault();
   dropArea.classList.remove("dragging");
   const fileList = e.dataTransfer.files;
-  c = preview_image(fileList[0]);
-  const dragSpan = document.getElementById("label");
-  c.then((result) => {
-    console.log("result", result);
+  resized = preview_image(fileList[0]);
+  resized.then((result) => {
     if (result.status) {
       dragSpan.remove();
-      console.log(result.img);
       inference(result.img);
     } else {
       dragSpan.innerHTML = "Something went wrong, please try again";
@@ -41,5 +39,39 @@ function handleDrop(e) {
 }
 
 function updateNutritionCard(data) {
-  //TODO: update card UI from new food and update in recent foods
+  //TODO: update in recent foods
+  console.log(data.nutrition_info);
+  var nutritionCard = `
+          <div class="card">
+            <div class="card-left">
+                <img src="${data.img_url}" alt="Food image" id="card-image">
+            </div>
+            <div class="card-right">
+                <h1 class="card-title">${data.nutrition_info["food"]}</h1>
+                <hr>
+                <table id="card-table">
+                </table>
+            </div>
+          </div>`;
+
+  document
+    .getElementById("middle-container")
+    .insertAdjacentHTML("beforeend", nutritionCard);
+  delete data.nutrition_info.food;
+
+  for (const [key, value] of Object.entries(data.nutrition_info)) {
+    var nutritionRow = `
+    <tr>
+        <td class="card-label">${key}</td>
+        <td class="card-value">${value}</td>
+    </tr>`;
+
+    try {
+      document
+        .getElementById("card-table")
+        .insertAdjacentHTML("beforeend", nutritionRow);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
