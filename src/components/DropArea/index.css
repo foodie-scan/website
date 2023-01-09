@@ -1,4 +1,6 @@
 #droparea-container {
+  background-color: #fff;
+  border: 6px solid;
   position: relative;
 }
 
@@ -13,8 +15,8 @@
 }
 
 #droparea-preview {
-  width: 200px;
-  height: 200px;
+  width: 272px;
+  height: 272px;
   background-position: center center;
   background-size: cover;
   pointer-events: none;
@@ -26,9 +28,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 24px;
-  color: #ccc;
-  text-align: center;
+  color: #3c3c3c;
 }
 
 #droparea-preview.has-image {

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
-import "./DropArea.css";
-import ndarray from "ndarray";
+import "./index.css";
+import Foodstats from "./Foodstats";
 
 function stopEvent(e) {
   e.preventDefault();
@@ -14,34 +14,44 @@ function stopEvent(e) {
 export default function DropArea() {
   const [data_url, setDataUrl] = useState("");
   const processImage = useCallback(async function (blob) {
-    const data_url = await blobToDataUrl(blob);
-    const resized_blob = await resizeImage(data_url);
-    const image_array = await blobToArray(resized_blob);
-    await inference(image_array);
+    let data_url = await blobToDataUrl(blob);
+    data_url = await resizeImage(data_url);
+    await inference(data_url.replace(/^data:image\/\w+;base64,/, ""));
     setDataUrl(data_url);
   }, []);
 
   return (
-    <div id="droparea-container">
-      <input
-        accept="image/jpeg, f/png"
-        id="droparea-file-input"
-        type="file"
-        onChange={(e) => processImage(e.target.files[0])}
-      />
-      <div
-        className={data_url ? "has-image" : ""}
-        id="droparea-preview"
-        onDragOver={stopEvent}
-        onDrop={async function (e) {
-          stopEvent(e);
-          await processImage(e.dataTransfer.files[0]);
-        }}
-        style={{ backgroundImage: `url(${data_url})` }}
-      >
-        <div id="droparea-label">Drag or Input Images</div>
+    <>
+      <div className="border-dark mb-5" id="droparea-container">
+        <input
+          accept="image/jpeg, f/png"
+          id="droparea-file-input"
+          type="file"
+          onChange={(e) => processImage(e.target.files[0])}
+        />
+        <div
+          className={data_url ? "has-image" : ""}
+          id="droparea-preview"
+          onDragOver={stopEvent}
+          onDrop={async function (e) {
+            stopEvent(e);
+            await processImage(e.dataTransfer.files[0]);
+          }}
+          style={{ backgroundImage: `url(${data_url})` }}
+        >
+          <label
+            className="fs-5 text-center w-100"
+            htmlFor="droparea-file-input"
+            id="droparea-label"
+          >
+            <span className="fs-4">Drag or Click</span>
+            <br />
+            to upload images
+          </label>
+        </div>
       </div>
-    </div>
+      <Foodstats className="w-100" src={data_url} stats={{}} title={"Burger"} />
+    </>
   );
 }
 
@@ -62,34 +72,13 @@ function blobToDataUrl(blob) {
   });
 }
 
-/**
- * @param {Blob} blob
- * @returns {Promise<string>}
- */
-function blobToArray(blob) {
-  return new Promise(function (resolve, reject) {
-    const file_reader = new FileReader();
-    file_reader.onloadend = function () {
-      const image_array = ndarray(
-        new Uint8Array(file_reader.result),
-        [1, 256, 256, 3]
-      );
-      resolve(image_array.data);
-    };
-    file_reader.onerror = function (e) {
-      reject(e);
-    };
-    file_reader.readAsArrayBuffer(blob);
-  });
-}
-
 const MAX_SIZE = 256;
 
 /**
  * Resizes image using its data url
  *
  * @param {string} data_url
- * @returns {Promise<Blob>}
+ * @returns {Promise<string>}
  */
 function resizeImage(data_url) {
   return new Promise((resolve) => {
@@ -116,16 +105,27 @@ function resizeImage(data_url) {
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, MAX_SIZE, MAX_SIZE);
       ctx.drawImage(image, 0, 0, width, height);
-      canvas.toBlob(resolve); // this will return base64 image results after resize
+      resolve(canvas.toDataURL()); // this will return base64 image results after resize
     };
     image.src = data_url;
   });
 }
 
 async function inference(image_array) {
-  const body = JSON.stringify(image_array);
+  const inference_response = await fetch(
+    "https://vs744x1swk.execute-api.us-east-1.amazonaws.com/LIA_deploy",
+    {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ base64str: image_array })
+    }
+  );
+  const class_name = await inference_response.json();
 
-  const response = await fetch(
+  const nutrition_response = await fetch(
     "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
     {
       method: "POST",
@@ -133,12 +133,11 @@ async function inference(image_array) {
       headers: {
         "Content-Type": "application/json"
       },
-      body
+      body: JSON.stringify({ class_name })
     }
   );
-  const nutritionData = await response.json();
-  console.log(nutritionData);
-  updateNutritionCard(nutritionData);
+  console.log(await nutrition_response.json());
+  // updateNutritionCard(nutritionData);
 }
 
 function updateNutritionCard(data) {
