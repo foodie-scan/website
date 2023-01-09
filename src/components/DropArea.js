@@ -24,15 +24,13 @@ export default function DropArea(props) {
         e.preventDefault();
       }}
       onDrop={async function (e) {
-        e.preventDefault();
-        setClassName("dragging");
-        const fileList = e.dataTransfer.files;
-        const fileImg = fileList[0];
         try {
-          const userImg = await image_to_base64(fileImg);
-          const resized = await reduce_image_file_size(userImg);
+          e.preventDefault();
+          setClassName("dragging");
+          const userImg = await blobToDataUrl(e.dataTransfer.files[0]);
           await inference(userImg);
           //display image in drop zone
+          const resized = await reduce_image_file_size(userImg);
           setSrc(resized);
         } catch (error) {
           console.error(error);
@@ -83,17 +81,20 @@ async function reduce_image_file_size(
   return resized_base64;
 }
 
-async function image_to_base64(file) {
-  let result_base64 = await new Promise((resolve) => {
-    let fileReader = new FileReader();
-    fileReader.onload = (e) => resolve(fileReader.result);
-    fileReader.onerror = (error) => {
-      console.log(error);
-      alert("An Error occurred please try again, File might be corrupt");
+/**
+ * @param {Blob} blob
+ */
+function blobToDataUrl(blob) {
+  return new Promise(function (resolve, reject) {
+    const file_reader = new FileReader();
+    file_reader.onload = function () {
+      resolve(file_reader.result);
     };
-    fileReader.readAsDataURL(file);
+    file_reader.onerror = function (e) {
+      reject(e);
+    };
+    file_reader.readAsDataURL(blob);
   });
-  return result_base64;
 }
 
 async function inference(base64str) {
@@ -106,7 +107,6 @@ async function inference(base64str) {
   //   "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
   //   {
   //     method: "POST",
-  //     mode: "cors",
   //     headers: {
   //       "Content-Type": "application/json"
   //     },
