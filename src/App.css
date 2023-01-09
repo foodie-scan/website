@@ -26,8 +26,8 @@ header {
 }
 
 hr {
-  color: #ced4da;
-  background-color: #ced4da;
+  color: var(--bs-light);
+  background-color: var(--bs-light);
   opacity: 1;
 }
 
@@ -37,10 +37,10 @@ hr {
 
 .middle-container {
   flex-basis: 50%;
-  display: -ms-inline-grid;
+  max-width: 690px;
 }
 
 .side-container {
-  display: -ms-inline-grid;
   flex-basis: 25%;
+  flex-grow: 1;
 }

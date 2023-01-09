@@ -138,7 +138,7 @@ export default function App() {
         </a>
       </header>
       <hr className="border-0 mb-5 mx-auto" id="top-divider" />
-      <div className="d-flex gap-5 w-100">
+      <div className="d-flex gap-5 mb-5 w-100">
         <div className="side-container">
           <h1>Left side</h1>
           {/* <RecentFood name="burger" stats_json={sample_food} /> */}

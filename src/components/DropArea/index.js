@@ -13,11 +13,15 @@ function stopEvent(e) {
  */
 export default function DropArea() {
   const [data_url, setDataUrl] = useState("");
+  const [foodstats, setFoodstats] = useState();
   const processImage = useCallback(async function (blob) {
     let data_url = await blobToDataUrl(blob);
     data_url = await resizeImage(data_url);
-    await inference(data_url.replace(/^data:image\/\w+;base64,/, ""));
+    const { class_name, img_url, nutrition_info } = await inference(
+      data_url.replace(/^data:image\/\w+;base64,/, "")
+    );
     setDataUrl(data_url);
+    setFoodstats({ src: img_url, stats: nutrition_info, title: class_name });
   }, []);
 
   return (
@@ -50,7 +54,7 @@ export default function DropArea() {
           </label>
         </div>
       </div>
-      <Foodstats className="w-100" src={data_url} stats={{}} title={"Burger"} />
+      {foodstats ? <Foodstats className="w-100" {...foodstats} /> : <></>}
     </>
   );
 }
@@ -111,7 +115,30 @@ function resizeImage(data_url) {
   });
 }
 
-async function inference(image_array) {
+/**
+ *
+ * @param {string} base64str - Data URL w/o /^data:image\/\w+;base64,/
+ * @returns {{
+ *  class_name: string,
+ *  img_url: string,
+ *  nutrition_info: Record<
+ *    | "Cholesterol"
+ *    | "Dietary Fiber"
+ *    | "Energy"
+ *    | "Iron"
+ *    | "Potassium"
+ *    | "Protein"
+ *    | "Saturated Fat"
+ *    | "Sodium"
+ *    | "Sugars"
+ *    | "Trans Fat"
+ *    | "Vitamin A"
+ *    | "Vitamin C",
+ *    string
+ *  >
+ * }}
+ */
+async function inference(base64str) {
   const inference_response = await fetch(
     "https://vs744x1swk.execute-api.us-east-1.amazonaws.com/LIA_deploy",
     {
@@ -120,7 +147,7 @@ async function inference(image_array) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ base64str: image_array })
+      body: JSON.stringify({ base64str })
     }
   );
   const class_name = await inference_response.json();
@@ -136,47 +163,8 @@ async function inference(image_array) {
       body: JSON.stringify({ class_name })
     }
   );
-  console.log(await nutrition_response.json());
-  // updateNutritionCard(nutritionData);
-}
-
-function updateNutritionCard(data) {
-  //TODO: update in recent foods
-  getRecentFoodAndCalories();
-  console.log(data.nutrition_info);
-  var nutritionCard = `
-          <div className="card">
-            <div className="card-left">
-                <img src="${data.img_url}" alt="Food image" id="card-image">
-            </div>
-            <div className="card-right">
-                <h1 className="card-title">${data.nutrition_info["food"]}</h1>
-                <hr>
-                <table id="card-table">
-                </table>
-            </div>
-          </div>`;
-
-  document
-    .getElementById("middle-container")
-    .insertAdjacentHTML("beforeend", nutritionCard);
-  delete data.nutrition_info.food;
-
-  for (const [key, value] of Object.entries(data.nutrition_info)) {
-    var nutritionRow = `
-    <tr>
-        <td className="card-label">${key}</td>
-        <td className="card-value">${value}</td>
-    </tr>`;
-
-    try {
-      document
-        .getElementById("card-table")
-        .insertAdjacentHTML("beforeend", nutritionRow);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const nutrition = await nutrition_response.json();
+  return { class_name, ...nutrition };
 }
 
 async function getRecentFoodAndCalories() {
