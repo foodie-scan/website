@@ -26,12 +26,13 @@ export default function DropArea(props) {
       onDrop={async function (e) {
         try {
           e.preventDefault();
+          const data_url = await resizeDataUrl(
+            await blobToDataUrl(e.dataTransfer.files[0])
+          );
+          await inference(data_url);
           setClassName("dragging");
-          const userImg = await blobToDataUrl(e.dataTransfer.files[0]);
-          await inference(userImg);
           //display image in drop zone
-          const resized = await reduce_image_file_size(userImg);
-          setSrc(resized);
+          setSrc(data_url);
         } catch (error) {
           console.error(error);
           setLabel("Something went wrong, please try again");
@@ -45,40 +46,42 @@ export default function DropArea(props) {
   );
 }
 
-// js file to handle image reszing and preview output
-async function reduce_image_file_size(
-  base64Str,
-  MAX_WIDTH = 580,
-  MAX_HEIGHT = 380
-) {
-  let resized_base64 = await new Promise((resolve) => {
-    let img = new Image();
-    img.src = base64Str;
-    img.onload = () => {
-      let canvas = document.createElement("canvas");
-      let width = img.width;
-      let height = img.height;
+const MAX_SIZE = 256;
+
+/**
+ * Resizes image using its data url
+ *
+ * @param {string} data_url
+ */
+async function resizeDataUrl(data_url) {
+  return new Promise((resolve) => {
+    let image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      let { height, width } = image;
 
       //the operators below ensure aspect ratios are kept
       if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
+        if (width > MAX_SIZE) {
+          height *= MAX_SIZE / width;
+          width = MAX_SIZE;
         }
       } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
+        if (height > MAX_SIZE) {
+          width *= MAX_SIZE / height;
+          height = MAX_SIZE;
         }
       }
-      canvas.width = width;
-      canvas.height = height;
-      let ctx = canvas.getContext("2d"); //define 2 dimensional rendering context
-      ctx.drawImage(img, 0, 0, width, height);
+      canvas.width = MAX_SIZE;
+      canvas.height = MAX_SIZE;
+      const ctx = canvas.getContext("2d"); //define 2 dimensional rendering context
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, MAX_SIZE, MAX_SIZE);
+      ctx.drawImage(image, 0, 0, width, height);
       resolve(canvas.toDataURL()); // this will return base64 image results after resize
     };
+    image.src = data_url;
   });
-  return resized_base64;
 }
 
 /**
@@ -103,19 +106,20 @@ async function inference(base64str) {
     base64str
   };
 
-  // const response = await fetch(
-  //   "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
-  //   {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify(payload)
-  //   }
-  // );
-  // const nutritionData = await response.json();
-  // console.log(nutritionData);
-  // updateNutritionCard(nutritionData);
+  const response = await fetch(
+    "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
+    {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+  const nutritionData = await response.json();
+  console.log(nutritionData);
+  updateNutritionCard(nutritionData);
 }
 
 function updateNutritionCard(data) {
