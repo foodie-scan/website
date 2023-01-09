@@ -1,43 +1,43 @@
 import DropArea from "./components/DropArea";
 import Foodstats from "./components/Foodstats";
 import sample_food from "./sample_food.json";
+import RecentFood from "./components/RecentFood";
 
 import "./App.css";
 
 export default function App() {
   return (
-    <div>
+    <>
       <header>
-        <div className="header-left">
+        <div className="header-left my-5">
           <a href="/" className="header-brand">
             Foodie scan
           </a>
         </div>
       </header>
-      <div id="middle-container">
-        <form method="post" encType="multipart/form-data">
-          <div>
-            <input
-              type="file"
-              id="image-file"
-              name="file"
-              accept="image/jpeg,image/png"
-              multiple
+      <div className="d-flex flex-row w-100">
+        <div className="side-container">
+          <h1>Left side</h1>
+          {/* <RecentFood name="burger" stats_json={sample_food} /> */}
+        </div>
+
+        <div className="align-items-center d-flex flex-column middle-container">
+          <DropArea />
+
+          <div className="card">
+            <Foodstats
+              className="w-100"
+              food_title={"burger"}
+              stats_json={sample_food}
             />
           </div>
-        </form>
+        </div>
 
-        <DropArea />
-
-        <div className="card">
-          <div className="card-left">
-            <img alt="Food" id="card-image" />
-          </div>
-          <div className="card-right">
-            <Foodstats food_title={"burger"} stats_json={sample_food} />
-          </div>
+        <div className="side-container">
+          <h1>Right side</h1>
+          {/* <RecentFood name="burger" stats_json={sample_food} /> */}
         </div>
       </div>
-    </div>
+    </>
   );
 }
