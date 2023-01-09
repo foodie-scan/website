@@ -44,7 +44,6 @@ function handleDrop(e) {
 function updateNutritionCard(data) {
   //TODO: update in recent foods
   getRecentFoodAndCalories();
-  console.log(data.nutrition_info);
   var nutritionCard = `
           <div class="card">
             <div class="card-left">

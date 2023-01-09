@@ -30,7 +30,6 @@ async function reduce_image_file_size(
       let ctx = canvas.getContext("2d"); //define 2 dimensional rendering context
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, 256, 256);
-      console.log(width, height);
       ctx.drawImage(img, 0, 0, width, height);
       resolve(canvas.toDataURL()); // this will return base64 image results after resize
     };

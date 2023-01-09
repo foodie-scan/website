@@ -1,5 +1,4 @@
 async function inference(base64str) {
-  console.log(base64str);
   const payload = {
     base64str,
   };
