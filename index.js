@@ -33,7 +33,7 @@ function handleDrop(e) {
   resized.then((result) => {
     if (result.success) {
       dragSpan.remove();
-      // inference(result.img);
+      inference(result.img);
     } else {
       dragSpan.innerHTML = "Something went wrong, please try again";
     }
@@ -70,13 +70,9 @@ function updateNutritionCard(data) {
         <td class="card-value">${value}</td>
     </tr>`;
 
-    try {
-      document
-        .getElementById("card-table")
-        .insertAdjacentHTML("beforeend", nutritionRow);
-    } catch (error) {
-      console.log(error);
-    }
+    document
+      .getElementById("card-table")
+      .insertAdjacentHTML("beforeend", nutritionRow);
   }
 }
 

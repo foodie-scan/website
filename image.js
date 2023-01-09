@@ -25,9 +25,12 @@ async function reduce_image_file_size(
           height = MAX_HEIGHT;
         }
       }
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = 256;
+      canvas.height = 256;
       let ctx = canvas.getContext("2d"); //define 2 dimensional rendering context
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, 256, 256);
+      console.log(width, height);
       ctx.drawImage(img, 0, 0, width, height);
       resolve(canvas.toDataURL()); // this will return base64 image results after resize
     };
@@ -48,31 +51,6 @@ async function image_to_base64(file) {
   return result_base64;
 }
 
-async function preview_image(fileImg) {
-  try {
-    // convert image to base64 & resize
-    var userImg = await image_to_base64(fileImg);
-    const resized = await reduce_image_file_size(userImg);
-    //display image in drop zone
-    document.getElementById("preview").src = resized;
-    // convert resized base64 back to file object
-    const resizedImgFile = await urltoFile(
-      resized,
-      fileImg["name"],
-      fileImg["type"]
-    );
-    const img_ndarray = image_to_ndarray(resizedImgFile);
-    return {
-      img: resizedImgFile,
-      success: true,
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      success: false,
-    };
-  }
-}
 function urltoFile(url, filename, mimeType) {
   return fetch(url)
     .then((res) => {
@@ -88,7 +66,35 @@ function image_to_ndarray(file) {
   reader.readAsArrayBuffer(file);
   reader.onloadend = () => {
     const data = new Uint8Array(reader.result);
-    const image = iota(data, [256, 256, 3]);
+    const image = ndarray(data, [256, 256, 3]);
     const imageArray = image.reshape([1, 256, 256, 3]);
   };
+  return imageArray;
+}
+
+// final function used
+async function preview_image(fileImg) {
+  try {
+    // convert image to base64 & resize
+    var base64Img = await image_to_base64(fileImg);
+    const resized = await reduce_image_file_size(base64Img);
+    //display image in drop zone
+    document.getElementById("preview").src = resized;
+    // convert resized base64 back to file object
+    const resizedImgFile = await urltoFile(
+      resized,
+      fileImg["name"],
+      fileImg["type"]
+    );
+    // const img_ndarray = image_to_ndarray(resizedImgFile);
+    return {
+      img: resized,
+      success: true,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+    };
+  }
 }
