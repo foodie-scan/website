@@ -1,4 +1,6 @@
 import DropArea from "./components/DropArea";
+import Foodstats from "./components/Foodstats";
+import sample_food from "./sample_food.json";
 
 import "./App.css";
 
@@ -8,7 +10,7 @@ export default function App() {
       <header>
         <div className="header-left">
           <a href="/" className="header-brand">
-            Foodie
+            Foodie scan
           </a>
         </div>
       </header>
@@ -27,63 +29,12 @@ export default function App() {
 
         <DropArea />
 
-        <div class="card">
-          <div class="card-left">
-            <img src="" alt="Food" id="card-image" />
+        <div className="card">
+          <div className="card-left">
+            <img alt="Food" id="card-image" />
           </div>
-          <div class="card-right">
-            <h1 class="card-title">Food Title</h1>
-            <hr />
-            <table class="card-table">
-              <tr>
-                <td class="card-label">Calories</td>
-                <td class="card-value">100</td>
-              </tr>
-              <tr>
-                <td class="card-label">Protein</td>
-                <td class="card-value">20g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Saturated Fat</td>
-                <td class="card-value">5g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Trans Fat</td>
-                <td class="card-value">100</td>
-              </tr>
-              <tr>
-                <td class="card-label">Cholesterol</td>
-                <td class="card-value">20g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Sodium</td>
-                <td class="card-value">5g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Potassium</td>
-                <td class="card-value">100</td>
-              </tr>
-              <tr>
-                <td class="card-label">Dietary Fibre</td>
-                <td class="card-value">20g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Sugars</td>
-                <td class="card-value">5g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Vitamin A</td>
-                <td class="card-value">5g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Vitamin C</td>
-                <td class="card-value">5g</td>
-              </tr>
-              <tr>
-                <td class="card-label">Iron</td>
-                <td class="card-value">5g</td>
-              </tr>
-            </table>
+          <div className="card-right">
+            <Foodstats food_title={"burger"} stats_json={sample_food} />
           </div>
         </div>
       </div>

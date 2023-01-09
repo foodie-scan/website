@@ -13,11 +13,13 @@ header {
   align-items: center;
   justify-content: center;
   height: 50px;
+  padding-top: 10px;
 }
 
 .header-brand {
   color: #000;
   text-decoration: none;
+  font-family: "Brush Script MT", cursive;
   font-size: 36px;
 }
 

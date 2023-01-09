@@ -1,0 +1,16 @@
+{
+  "sample_food": {
+    "Calories": "100",
+    "Protein": "20g",
+    "Saturated_fat": "5g",
+    "Trans_fat": "10g",
+    "Cholesterol": "20g",
+    "Sodium": "5g",
+    "Potassium": "100mg",
+    "Dietary_Fibre": "20g",
+    "Sugars": "5g",
+    "Vitamin_A": "5mg",
+    "Vitamin_C": "5mg",
+    "Iron": "10mg"
+  }
+}
