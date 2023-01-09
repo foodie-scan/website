@@ -144,9 +144,7 @@ export default function App() {
           {/* <RecentFood name="burger" stats_json={sample_food} /> */}
         </div>
 
-        <div className="align-items-center d-flex flex-column middle-container">
-          <DropArea />
-        </div>
+        <DropArea />
 
         <div className="side-container">
           <h1>Right side</h1>

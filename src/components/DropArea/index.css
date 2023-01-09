@@ -19,3 +19,8 @@
   transform: translate(-50%, -50%);
   color: #3c3c3c;
 }
+
+main {
+  flex-basis: 50%;
+  max-width: 690px;
+}

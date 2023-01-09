@@ -28,7 +28,7 @@ export default function DropArea() {
   }, []);
 
   return (
-    <>
+    <main className="align-items-center d-flex flex-column">
       <div
         className="bg-white border-dark mb-5 placeholder-glow position-relative"
         id="droparea-container"
@@ -66,7 +66,7 @@ export default function DropArea() {
         </div>
       </div>
       {foodstats ? <Foodstats className="w-100" {...foodstats} /> : <></>}
-    </>
+    </main>
   );
 }
 
