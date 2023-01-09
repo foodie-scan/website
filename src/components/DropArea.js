@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 
 import "./DropArea.css";
+import ndarray from "ndarray";
 
 function stopEvent(e) {
   e.preventDefault();
@@ -13,16 +14,17 @@ function stopEvent(e) {
 export default function DropArea() {
   const [data_url, setDataUrl] = useState("");
   const processImage = useCallback(async function (blob) {
-    let data_url = await blobToDataUrl(blob);
-    data_url = await resizeDataUrl(data_url);
-    await inference(data_url);
+    const data_url = await blobToDataUrl(blob);
+    const resized_blob = await resizeImage(data_url);
+    const image_array = await blobToArray(resized_blob);
+    await inference(image_array);
     setDataUrl(data_url);
   }, []);
 
   return (
     <div id="droparea-container">
       <input
-        accept="image/jpeg,image/png"
+        accept="image/jpeg, f/png"
         id="droparea-file-input"
         type="file"
         onChange={(e) => processImage(e.target.files[0])}
@@ -45,6 +47,7 @@ export default function DropArea() {
 
 /**
  * @param {Blob} blob
+ * @returns {Promise<string>}
  */
 function blobToDataUrl(blob) {
   return new Promise(function (resolve, reject) {
@@ -59,14 +62,36 @@ function blobToDataUrl(blob) {
   });
 }
 
+/**
+ * @param {Blob} blob
+ * @returns {Promise<string>}
+ */
+function blobToArray(blob) {
+  return new Promise(function (resolve, reject) {
+    const file_reader = new FileReader();
+    file_reader.onloadend = function () {
+      const image_array = ndarray(
+        new Uint8Array(file_reader.result),
+        [1, 256, 256, 3]
+      );
+      resolve(image_array.data);
+    };
+    file_reader.onerror = function (e) {
+      reject(e);
+    };
+    file_reader.readAsArrayBuffer(blob);
+  });
+}
+
 const MAX_SIZE = 256;
 
 /**
  * Resizes image using its data url
  *
  * @param {string} data_url
+ * @returns {Promise<Blob>}
  */
-function resizeDataUrl(data_url) {
+function resizeImage(data_url) {
   return new Promise((resolve) => {
     let image = new Image();
     image.onload = function () {
@@ -91,16 +116,14 @@ function resizeDataUrl(data_url) {
       ctx.fillStyle = "black";
       ctx.fillRect(0, 0, MAX_SIZE, MAX_SIZE);
       ctx.drawImage(image, 0, 0, width, height);
-      resolve(canvas.toDataURL()); // this will return base64 image results after resize
+      canvas.toBlob(resolve); // this will return base64 image results after resize
     };
     image.src = data_url;
   });
 }
 
-async function inference(base64str) {
-  const payload = {
-    base64str
-  };
+async function inference(image_array) {
+  const body = JSON.stringify(image_array);
 
   const response = await fetch(
     "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
@@ -110,7 +133,7 @@ async function inference(base64str) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload)
+      body
     }
   );
   const nutritionData = await response.json();
