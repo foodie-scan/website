@@ -1,8 +1,9 @@
 // js file to handle image reszing and preview output
 async function reduce_image_file_size(
+  //TODO: set padding for non-square images
   base64Str,
-  MAX_WIDTH = 580,
-  MAX_HEIGHT = 380
+  MAX_WIDTH = 256,
+  MAX_HEIGHT = 256
 ) {
   let resized_base64 = await new Promise((resolve) => {
     let img = new Image();
@@ -49,19 +50,45 @@ async function image_to_base64(file) {
 
 async function preview_image(fileImg) {
   try {
+    // convert image to base64 & resize
     var userImg = await image_to_base64(fileImg);
     const resized = await reduce_image_file_size(userImg);
     //display image in drop zone
     document.getElementById("preview").src = resized;
+    // convert resized base64 back to file object
+    const resizedImgFile = await urltoFile(
+      resized,
+      fileImg["name"],
+      fileImg["type"]
+    );
+    const img_ndarray = image_to_ndarray(resizedImgFile);
     return {
-      img: userImg,
-      resizedImg: resized,
-      status: true,
+      img: resizedImgFile,
+      success: true,
     };
   } catch (error) {
     console.log(error);
     return {
-      status: false,
+      success: false,
     };
   }
+}
+function urltoFile(url, filename, mimeType) {
+  return fetch(url)
+    .then((res) => {
+      return res.arrayBuffer();
+    })
+    .then((buf) => {
+      return new File([buf], filename, { type: mimeType });
+    });
+}
+
+function image_to_ndarray(file) {
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.onloadend = () => {
+    const data = new Uint8Array(reader.result);
+    const image = iota(data, [256, 256, 3]);
+    const imageArray = image.reshape([1, 256, 256, 3]);
+  };
 }

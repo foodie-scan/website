@@ -31,9 +31,9 @@ function handleDrop(e) {
   const fileList = e.dataTransfer.files;
   resized = preview_image(fileList[0]);
   resized.then((result) => {
-    if (result.status) {
+    if (result.success) {
       dragSpan.remove();
-      inference(result.img);
+      // inference(result.img);
     } else {
       dragSpan.innerHTML = "Something went wrong, please try again";
     }
