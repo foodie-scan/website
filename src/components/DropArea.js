@@ -1,49 +1,62 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+
+import "./DropArea.css";
+
+function stopEvent(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
 
 /**
  * @param {JSX.IntrinsicElements["div"]} props
  */
-export default function DropArea(props) {
-  const [class_name, setClassName] = useState("");
-  const [label, setLabel] = useState("Drop files here");
-  const [src, setSrc] = useState("");
+export default function DropArea() {
+  const [data_url, setDataUrl] = useState("");
+  const processImage = useCallback(async function (blob) {
+    let data_url = await blobToDataUrl(blob);
+    data_url = await resizeDataUrl(data_url);
+    await inference(data_url);
+    setDataUrl(data_url);
+  }, []);
 
   return (
-    <div
-      className={class_name}
-      id="drop-area"
-      onDragEnter={function (e) {
-        e.preventDefault();
-        setClassName("dragging");
-      }}
-      onDragLeave={function (e) {
-        e.preventDefault();
-        setClassName("");
-      }}
-      onDragOver={function (e) {
-        e.preventDefault();
-      }}
-      onDrop={async function (e) {
-        try {
-          e.preventDefault();
-          const data_url = await resizeDataUrl(
-            await blobToDataUrl(e.dataTransfer.files[0])
-          );
-          await inference(data_url);
-          setClassName("dragging");
-          //display image in drop zone
-          setSrc(data_url);
-        } catch (error) {
-          console.error(error);
-          setLabel("Something went wrong, please try again");
-        }
-      }}
-      {...props}
-    >
-      {src ? <></> : <span className="label">{label}</span>}
-      <img alt="Preview" src={src} />
+    <div id="droparea-container">
+      <input
+        accept="image/jpeg,image/png"
+        id="droparea-file-input"
+        type="file"
+        onChange={(e) => processImage(e.target.files[0])}
+      />
+      <div
+        className={data_url ? "has-image" : ""}
+        id="droparea-preview"
+        onDragOver={stopEvent}
+        onDrop={async function (e) {
+          stopEvent(e);
+          await processImage(e.dataTransfer.files[0]);
+        }}
+        style={{ backgroundImage: `url(${data_url})` }}
+      >
+        <div id="droparea-label">Drag or Input Images</div>
+      </div>
     </div>
   );
+}
+
+/**
+ * @param {Blob} blob
+ */
+function blobToDataUrl(blob) {
+  return new Promise(function (resolve, reject) {
+    const file_reader = new FileReader();
+    file_reader.onload = function () {
+      resolve(file_reader.result);
+    };
+    file_reader.onerror = function (e) {
+      reject(e);
+    };
+    file_reader.readAsDataURL(blob);
+  });
 }
 
 const MAX_SIZE = 256;
@@ -53,10 +66,10 @@ const MAX_SIZE = 256;
  *
  * @param {string} data_url
  */
-async function resizeDataUrl(data_url) {
+function resizeDataUrl(data_url) {
   return new Promise((resolve) => {
     let image = new Image();
-    image.onload = () => {
+    image.onload = function () {
       const canvas = document.createElement("canvas");
       let { height, width } = image;
 
@@ -84,24 +97,7 @@ async function resizeDataUrl(data_url) {
   });
 }
 
-/**
- * @param {Blob} blob
- */
-function blobToDataUrl(blob) {
-  return new Promise(function (resolve, reject) {
-    const file_reader = new FileReader();
-    file_reader.onload = function () {
-      resolve(file_reader.result);
-    };
-    file_reader.onerror = function (e) {
-      reject(e);
-    };
-    file_reader.readAsDataURL(blob);
-  });
-}
-
 async function inference(base64str) {
-  console.log(base64str);
   const payload = {
     base64str
   };

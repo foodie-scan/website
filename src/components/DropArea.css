@@ -1,0 +1,40 @@
+#droparea-container {
+  position: relative;
+}
+
+#droparea-file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#droparea-preview {
+  width: 200px;
+  height: 200px;
+  background-position: center center;
+  background-size: cover;
+  pointer-events: none;
+  position: relative;
+}
+
+#droparea-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #ccc;
+  text-align: center;
+}
+
+#droparea-preview.has-image {
+  background-image: none;
+}
+
+#droparea-preview.has-image #droparea-label {
+  display: none;
+}
