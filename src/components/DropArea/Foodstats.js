@@ -33,7 +33,7 @@ function FoodstatsRow({ data, header }) {
  */
 export default function Foodstats({ src, stats, title }) {
   return (
-    <div className="align-items-center border border-2 border-black card flex-column flex-xl-row gap-4 px-4 py-3 w-100">
+    <div className="align-items-center bg-white border border-2 border-black card flex-column flex-xl-row gap-4 px-4 py-3 w-100">
       <div className="align-items-center d-flex">
         <img
           src={src}

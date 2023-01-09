@@ -27,7 +27,7 @@ export default function DropArea() {
   return (
     <>
       <div
-        className="border-dark mb-5 position-relative"
+        className="bg-white border-dark mb-5 position-relative"
         id="droparea-container"
       >
         <input
@@ -48,7 +48,7 @@ export default function DropArea() {
           style={{ backgroundImage: `url(${data_url})` }}
         >
           <label
-            className="fs-5 position-absolute start-50 text-center top-50 w-100"
+            className="fs-5 position-absolute start-50 text-black text-center top-50 w-100"
             htmlFor="droparea-file-input"
             id="droparea-label"
           >
