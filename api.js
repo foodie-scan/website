@@ -34,6 +34,6 @@ async function getRecentFoodAndCalories() {
   const apiResponse = await response.json();
   console.log(apiResponse);
   //TODO: Create the below functions
-  // displayCalories(apiResponse);
-  // displayRecentFoods(apiResponse);
+  // displayCalories(apiResponse["total_calories"]);
+  // displayRecentFoods(apiResponse["recent_food"]);
 }

@@ -10,6 +10,7 @@ input.addEventListener("onchange", handleDrop);
 
 var base64str;
 
+//----------------------------------------- Image upload logic ----------------------------------------- //
 function handleDragEnter(e) {
   e.preventDefault();
   dropArea.classList.add("dragging");
@@ -39,6 +40,7 @@ function handleDrop(e) {
   });
 }
 
+//----------------------------------------- UI updates ----------------------------------------- //
 function updateNutritionCard(data) {
   //TODO: update in recent foods
   getRecentFoodAndCalories();
@@ -77,3 +79,7 @@ function updateNutritionCard(data) {
     }
   }
 }
+
+function displayCalories(totalCalories) {}
+
+function displayRecentFoods(recentFood) {}
