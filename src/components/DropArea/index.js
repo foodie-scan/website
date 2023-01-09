@@ -26,15 +26,19 @@ export default function DropArea() {
 
   return (
     <>
-      <div className="border-dark mb-5" id="droparea-container">
+      <div
+        className="border-dark mb-5 position-relative"
+        id="droparea-container"
+      >
         <input
           accept="image/jpeg, f/png"
+          className="h-100 position-absolute w-100"
           id="droparea-file-input"
           type="file"
           onChange={(e) => processImage(e.target.files[0])}
         />
         <div
-          className={data_url ? "has-image" : ""}
+          className={`position-relative ${data_url ? " has-image" : ""}`}
           id="droparea-preview"
           onDragOver={stopEvent}
           onDrop={async function (e) {
@@ -44,7 +48,7 @@ export default function DropArea() {
           style={{ backgroundImage: `url(${data_url})` }}
         >
           <label
-            className="fs-5 text-center w-100"
+            className="fs-5 position-absolute start-50 text-center top-50 w-100"
             htmlFor="droparea-file-input"
             id="droparea-label"
           >

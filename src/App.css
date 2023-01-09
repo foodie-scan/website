@@ -1,6 +1,4 @@
 body {
-  margin: 0;
-  padding: 0;
   background-color: #fefefe;
 }
 
@@ -10,19 +8,11 @@ body {
 
 #top-divider {
   height: 3px;
-  margin-top: 1.8rem;
+  margin-top: 0.3rem;
 }
 
 #file {
   display: none;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  margin-top: 30px;
 }
 
 hr {

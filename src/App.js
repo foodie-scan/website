@@ -6,7 +6,7 @@ import "./App.css";
 export default function App() {
   return (
     <div id="container" className="mx-auto">
-      <header>
+      <header className="align-items-center d-flex justify-content-center mt-2">
         <a
           className="fw-800 header-brand text-decoration-none text-primary"
           href="/"
