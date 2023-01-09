@@ -19,11 +19,3 @@
   transform: translate(-50%, -50%);
   color: #3c3c3c;
 }
-
-#droparea-preview.has-image {
-  background-image: none;
-}
-
-#droparea-preview.has-image #droparea-label {
-  display: none;
-}

@@ -13,13 +13,16 @@ function stopEvent(e) {
  */
 export default function DropArea() {
   const [data_url, setDataUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const [foodstats, setFoodstats] = useState();
   const processImage = useCallback(async function (blob) {
+    setLoading(true);
     let data_url = await blobToDataUrl(blob);
     data_url = await resizeImage(data_url);
     const { class_name, img_url, nutrition_info } = await inference(
       data_url.replace(/^data:image\/\w+;base64,/, "")
     );
+    setLoading(false);
     setDataUrl(data_url);
     setFoodstats({ src: img_url, stats: nutrition_info, title: class_name });
   }, []);
@@ -27,7 +30,7 @@ export default function DropArea() {
   return (
     <>
       <div
-        className="bg-white border-dark mb-5 position-relative"
+        className="bg-white border-dark mb-5 placeholder-glow position-relative"
         id="droparea-container"
       >
         <input
@@ -38,7 +41,7 @@ export default function DropArea() {
           onChange={(e) => processImage(e.target.files[0])}
         />
         <div
-          className={`position-relative ${data_url ? " has-image" : ""}`}
+          className={`position-relative${loading ? " placeholder" : ""}`}
           id="droparea-preview"
           onDragOver={stopEvent}
           onDrop={async function (e) {
@@ -47,15 +50,19 @@ export default function DropArea() {
           }}
           style={{ backgroundImage: `url(${data_url})` }}
         >
-          <label
-            className="fs-5 position-absolute start-50 text-black text-center top-50 w-100"
-            htmlFor="droparea-file-input"
-            id="droparea-label"
-          >
-            <span className="fs-4">Drag or Click</span>
-            <br />
-            to upload images
-          </label>
+          {data_url || loading ? (
+            <></>
+          ) : (
+            <label
+              className="fs-5 position-absolute start-50 text-black text-center top-50 w-100"
+              htmlFor="droparea-file-input"
+              id="droparea-label"
+            >
+              <span className="fs-4">Drag or Click</span>
+              <br />
+              to upload images
+            </label>
+          )}
         </div>
       </div>
       {foodstats ? <Foodstats className="w-100" {...foodstats} /> : <></>}
