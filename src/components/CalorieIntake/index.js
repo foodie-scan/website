@@ -1,13 +1,16 @@
 import Past5Days from "./Past5Days";
 import Today from "./Today";
 
-import "./Today.css";
+import "./index.css";
 
 export default function CalorieIntake({ data }) {
   const date = new Date();
 
   return (
-    <aside className="align-items-center d-flex flex-column">
+    <aside
+      className="align-items-center d-flex flex-column"
+      id="calorie-intake"
+    >
       <h3 className="fw-800">Calorie Intake</h3>
       <Today data={data[formatYYYYMMDD(date)]} />
       <Past5Days

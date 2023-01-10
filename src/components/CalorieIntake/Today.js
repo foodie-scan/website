@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import JustGage from "justgage";
 
+import "./Today.css";
+
 const id = "calorie-intake-today";
 
 export default function Today({ data }) {

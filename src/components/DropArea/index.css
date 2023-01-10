@@ -1,3 +1,9 @@
+@media (min-width: 992px) {
+  #droparea {
+    order: 2;
+  }
+}
+
 #droparea-container {
   border: 6px solid;
 }

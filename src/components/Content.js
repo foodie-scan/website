@@ -22,9 +22,9 @@ export default function Content() {
 
   return (
     <div className="align-items-center align-items-lg-start d-flex flex-column flex-lg-row gap-5 mb-5 w-100">
-      <RecentFoods data={recent_foods} />
       <DropArea setUpdate={setUpdate} />
       <CalorieIntake data={calorie_intake} />
+      <RecentFoods data={recent_foods} />
     </div>
   );
 }

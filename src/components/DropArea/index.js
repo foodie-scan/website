@@ -33,7 +33,7 @@ export default function DropArea({ setUpdate }) {
   );
 
   return (
-    <main className="align-items-center d-flex flex-column">
+    <main className="align-items-center d-flex flex-column" id="droparea">
       <div
         className="bg-white border-dark mb-5 placeholder-glow position-relative"
         id="droparea-container"
