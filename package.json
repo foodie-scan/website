@@ -12,7 +12,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "upload": "aws s3 sync build s3://lia-website",
+    "deploy": "yarn build && yarn upload"
   },
   "eslintConfig": {
     "extends": [
