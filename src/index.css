@@ -22,6 +22,8 @@
 :root {
   --bs-primary: #fa8a10;
   --bs-primary-rgb: 250, 138, 16;
+  --bs-info: #20c798;
+  --bs-info-rgb: 32, 199, 152;
 
   --bs-black: #060606;
   --bs-black-rgb: 6, 6, 6;

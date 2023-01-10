@@ -23,7 +23,7 @@ import "./Foodstats.css";
  * @returns
  */
 export default function Foodstats({ food, src, stats }) {
-  function FoodstatsRow({ header }) {
+  function Foodstat({ header }) {
     return (
       <tr>
         <th className="pe-4">{header}</th>
@@ -33,7 +33,7 @@ export default function Foodstats({ food, src, stats }) {
   }
 
   return (
-    <div className="align-items-center bg-white border border-2 border-success card flex-column flex-xl-row gap-4 px-4 py-3 w-100">
+    <div className="align-items-center bg-white border border-2 border-black card flex-column flex-xl-row gap-4 px-4 py-3 w-100">
       <div className="align-items-center d-flex">
         <img
           src={src}
@@ -44,22 +44,22 @@ export default function Foodstats({ food, src, stats }) {
         />
       </div>
       <div className="card-body my-1 p-0">
-        <h5 className="card-title fw-800 text-center">{food}</h5>
+        <h5 className="card-title fw-800 text-center text-info">{food}</h5>
         <hr id="foodstats-divider" />
         <table className="table">
           <tbody>
-            <FoodstatsRow header="Energy" />
-            <FoodstatsRow header="Protein" />
-            <FoodstatsRow header="Saturated Fat" />
-            <FoodstatsRow header="Trans Fat" />
-            <FoodstatsRow header="Cholesterol" />
-            <FoodstatsRow header="Sodium" />
-            <FoodstatsRow header="Potassium" />
-            <FoodstatsRow header="Dietary Fibre" />
-            <FoodstatsRow header="Sugars" />
-            <FoodstatsRow header="Vitamin A" />
-            <FoodstatsRow header="Vitamin C" />
-            <FoodstatsRow header="Iron" />
+            <Foodstat header="Energy" />
+            <Foodstat header="Protein" />
+            <Foodstat header="Saturated Fat" />
+            <Foodstat header="Trans Fat" />
+            <Foodstat header="Cholesterol" />
+            <Foodstat header="Sodium" />
+            <Foodstat header="Potassium" />
+            <Foodstat header="Dietary Fiber" />
+            <Foodstat header="Sugars" />
+            <Foodstat header="Vitamin A" />
+            <Foodstat header="Vitamin C" />
+            <Foodstat header="Iron" />
           </tbody>
         </table>
       </div>
