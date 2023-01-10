@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import "./FoodDetails.css";
+
 const id = "food-details";
 
 export default function FoodDetails() {
