@@ -16,7 +16,8 @@ export default function Today({ data }) {
           levelColors: ["#FA8305", "#13EBAD", "#FA053E"],
           max: 3000,
           min: 1500,
-          relativeGaugeSize: true
+          relativeGaugeSize: true,
+          value: 0
         });
       }
     },
