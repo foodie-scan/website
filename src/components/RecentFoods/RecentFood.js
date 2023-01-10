@@ -39,7 +39,7 @@ export default function RecentFood({ food, src, stats }) {
         <h6 className="card-title fw-800 text-center text-info">{food}</h6>
         <hr className="recent-food-divider" />
         <small className="">
-          <table className="table">
+          <table className="table table-hover">
             <tbody>
               <RecentFood header="Energy" />
               <RecentFood header="Protein" />

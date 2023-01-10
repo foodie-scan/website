@@ -46,7 +46,7 @@ export default function Foodstats({ food, src, stats }) {
       <div className="card-body my-1 p-0">
         <h5 className="card-title fw-800 text-center text-info">{food}</h5>
         <hr id="foodstats-divider" />
-        <table className="table">
+        <table className="table table-hover">
           <tbody>
             <Foodstat header="Energy" />
             <Foodstat header="Protein" />
