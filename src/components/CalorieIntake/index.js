@@ -5,6 +5,7 @@ import "./index.css";
 
 export default function CalorieIntake({ data }) {
   const date = new Date();
+  const date_strs = Object.keys(data);
 
   return (
     <aside
@@ -13,13 +14,18 @@ export default function CalorieIntake({ data }) {
     >
       <h3 className="fw-800">Calorie Intake</h3>
       <Today data={data[formatYYYYMMDD(date)]} />
-      <PastDays
-        data={Object.values(data)}
-        labels={Object.keys(data).map(function (date_str) {
-          const date = new Date(date_str);
-          return formatMMMDD(date);
-        })}
-      />
+      {date_strs.length ? (
+        <PastDays
+          data={Object.values(data)}
+          labels={date_strs.map(function (date_str) {
+            const date = new Date(date_str);
+            return formatMMMDD(date);
+          })}
+          past={Math.ceil((date - new Date(date_strs[0])) / 86400000)}
+        />
+      ) : (
+        <></>
+      )}
     </aside>
   );
 }

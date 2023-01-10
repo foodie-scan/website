@@ -19,12 +19,10 @@ Chart.register(
 );
 // const id = "calorie-intake-p5d";
 
-export default function PastDays({ data, labels }) {
+export default function PastDays({ data, labels, past }) {
   return (
     <section>
-      <h4 className="fw-bold text-center text-primary">
-        Past {data.length} Days
-      </h4>
+      <h4 className="fw-bold text-center text-primary">Past {past} Days</h4>
       <Line
         data={{
           datasets: [
