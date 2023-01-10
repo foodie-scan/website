@@ -20,7 +20,7 @@ import "./RecentFood.css";
  */
 export default function RecentFood({ food, timestamp }) {
   const food2nutrition = useContext(Food2NutritionContext);
-  const info = food2nutrition[food];
+  const info = food2nutrition?.[food];
 
   function Foodstat({ header }) {
     return (
