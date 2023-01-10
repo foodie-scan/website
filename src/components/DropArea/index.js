@@ -24,7 +24,7 @@ export default function DropArea() {
     );
     setLoading(false);
     setDataUrl(data_url);
-    setFoodstats({ src: img_url, stats: nutrition_info, title: class_name });
+    setFoodstats({ food: class_name, src: img_url, stats: nutrition_info });
   }, []);
 
   return (
@@ -129,7 +129,7 @@ function resizeImage(data_url) {
 /**
  *
  * @param {string} base64str - Data URL w/o /^data:image\/\w+;base64,/
- * @returns {{
+ * @returns {Promise<{
  *  class_name: string,
  *  img_url: string,
  *  nutrition_info: Record<
@@ -147,7 +147,7 @@ function resizeImage(data_url) {
  *    | "Vitamin C",
  *    string
  *  >
- * }}
+ * }>}
  */
 async function inference(base64str) {
   const inference_response = await fetch(

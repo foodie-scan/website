@@ -22,7 +22,7 @@ import "./Foodstats.css";
  * }} props
  * @returns
  */
-export default function Foodstats({ src, stats, title }) {
+export default function Foodstats({ food, src, stats }) {
   function FoodstatsRow({ header }) {
     return (
       <tr>
@@ -38,13 +38,13 @@ export default function Foodstats({ src, stats, title }) {
         <img
           src={src}
           className="img-fluid rounded-2"
-          alt={title}
+          alt={food}
           height={224}
           width={224}
         />
       </div>
       <div className="card-body my-1 p-0">
-        <h5 className="card-title fw-800 text-center">{title}</h5>
+        <h5 className="card-title fw-800 text-center">{food}</h5>
         <hr id="foodstats-divider" />
         <table className="table">
           <tbody>
