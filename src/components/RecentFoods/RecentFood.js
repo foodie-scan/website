@@ -32,7 +32,12 @@ export default function RecentFood({ food, timestamp }) {
   }
 
   return (
-    <div className="border border-1 border-dark bg-white card shadow-sm">
+    <button
+      className="border border-1 border-dark bg-white card d-flex p-0 shadow-sm"
+      data-bs-toggle="modal"
+      data-bs-target="#food-details"
+      data-bs-data={JSON.stringify({ name: food, info })}
+    >
       <div className="align-items-center d-flex flex-column flex-xxl-row gap-2 px-3 pt-2">
         <div className="align-items-center d-flex flex-grow-1">
           <img
@@ -58,7 +63,9 @@ export default function RecentFood({ food, timestamp }) {
           </small>
         </div>
       </div>
-      <small className="card-footer text-center text-muted">{timestamp}</small>
-    </div>
+      <small className="card-footer text-center text-muted w-100">
+        {timestamp}
+      </small>
+    </button>
   );
 }

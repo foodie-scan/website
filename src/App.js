@@ -1,4 +1,5 @@
 import Content from "./components/Content";
+import FoodDetails from "./components/FoodDetails";
 
 import "./App.css";
 
@@ -138,6 +139,7 @@ export default function App() {
       </header>
       <hr className="border-0 mb-5 mx-auto" id="top-divider" />
       <Content />
+      <FoodDetails />
     </div>
   );
 }
