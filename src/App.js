@@ -1,5 +1,6 @@
+import CalorieIntake from "./components/CalorieIntake";
 import DropArea from "./components/DropArea";
-import RecentFood from "./components/RecentFood";
+import RecentFoods from "./components/RecentFoods";
 
 import "./App.css";
 
@@ -139,17 +140,11 @@ export default function App() {
       </header>
       <hr className="border-0 mb-5 mx-auto" id="top-divider" />
       <div className="d-flex gap-5 mb-5 w-100">
-        <div className="side-container">
-          <h1>Left side</h1>
-          {/* <RecentFood name="burger" stats_json={sample_food} /> */}
-        </div>
+        <RecentFoods />
 
         <DropArea />
 
-        <div className="side-container">
-          <h1>Right side</h1>
-          {/* <RecentFood name="burger" stats_json={sample_food} /> */}
-        </div>
+        <CalorieIntake />
       </div>
     </div>
   );

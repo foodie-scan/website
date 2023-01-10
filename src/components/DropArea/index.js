@@ -177,21 +177,3 @@ async function inference(base64str) {
   const nutrition = await nutrition_response.json();
   return { class_name, ...nutrition };
 }
-
-async function getRecentFoodAndCalories() {
-  const response = await fetch(
-    "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
-    {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-  );
-  const apiResponse = await response.json();
-  console.log(apiResponse);
-  //TODO: Create the below functions
-  // displayCalories(apiResponse);
-  // displayRecentFoods(apiResponse);
-}

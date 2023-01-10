@@ -15,6 +15,11 @@ body {
   display: none;
 }
 
+aside {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+
 hr {
   color: var(--bs-light);
   background-color: var(--bs-light);
@@ -23,9 +28,4 @@ hr {
 
 .header-brand {
   font-size: 72px;
-}
-
-.side-container {
-  flex-basis: 25%;
-  flex-grow: 1;
 }
