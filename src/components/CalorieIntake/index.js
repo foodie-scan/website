@@ -1,4 +1,4 @@
-import Past5Days from "./Past5Days";
+import PastDays from "./PastDays";
 import Today from "./Today";
 
 import "./index.css";
@@ -13,7 +13,7 @@ export default function CalorieIntake({ data }) {
     >
       <h3 className="fw-800">Calorie Intake</h3>
       <Today data={data[formatYYYYMMDD(date)]} />
-      <Past5Days
+      <PastDays
         data={Object.values(data)}
         labels={Object.keys(data).map(function (date_str) {
           const date = new Date(date_str);
