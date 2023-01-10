@@ -3,7 +3,7 @@ import JustGage from "justgage";
 
 const id = "calorie-intake-today";
 
-export default function Today() {
+export default function Today({ data }) {
   const gauge_ref = useRef();
   useEffect(
     function () {
@@ -13,12 +13,18 @@ export default function Today() {
           id,
           levelColors: ["#FA8305", "#13EBAD", "#FA053E"],
           max: 3000,
-          min: 1500,
-          value: 2250
+          min: 1500
         });
       }
     },
     [gauge_ref]
+  );
+
+  useEffect(
+    function () {
+      if (data) gauge_ref.current.refresh(data);
+    },
+    [data, gauge_ref]
   );
 
   return (
