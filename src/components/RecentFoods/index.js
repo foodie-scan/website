@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import FoodItem from "./FoodItem.js";
+import RecentFood from "./RecentFood.js";
 
 export default function RecentFoods() {
   useEffect(function () {
@@ -11,9 +11,9 @@ export default function RecentFoods() {
 
   return (
     <aside>
-      <h3 className="fw-800">Recent Food</h3>
+      <h3 className="fw-800 mb-3">Recent Food</h3>
       {items}
-      {/* <FoodItem name={"burger"} stats_array={sample_food} /> */}
+      <RecentFood food="Carrot Cake" stats={{}} />
     </aside>
   );
 }
