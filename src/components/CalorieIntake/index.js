@@ -3,16 +3,16 @@ import Today from "./Today";
 
 import "./Today.css";
 
-export default function CalorieIntake({ calorie_intake }) {
+export default function CalorieIntake({ data }) {
   const date = new Date();
 
   return (
     <aside className="align-items-center d-flex flex-column">
       <h3 className="fw-800">Calorie Intake</h3>
-      <Today data={calorie_intake[formatYYYYMMDD(date)]} />
+      <Today data={data[formatYYYYMMDD(date)]} />
       <Past5Days
-        data={Object.values(calorie_intake)}
-        labels={Object.keys(calorie_intake).map(function (date_str) {
+        data={Object.values(data)}
+        labels={Object.keys(data).map(function (date_str) {
           const date = new Date(date_str);
           return formatMMMDD(date);
         })}

@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
 
-import "./index.css";
 import Foodstats from "./Foodstats";
+
+import "./index.css";
 
 function stopEvent(e) {
   e.preventDefault();
@@ -11,21 +12,25 @@ function stopEvent(e) {
 /**
  * @param {JSX.IntrinsicElements["div"]} props
  */
-export default function DropArea() {
+export default function DropArea({ setUpdate }) {
   const [data_url, setDataUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [foodstats, setFoodstats] = useState();
-  const processImage = useCallback(async function (blob) {
-    setLoading(true);
-    let data_url = await blobToDataUrl(blob);
-    data_url = await resizeImage(data_url);
-    const { class_name, img_url, nutrition_info } = await inference(
-      data_url.replace(/^data:image\/\w+;base64,/, "")
-    );
-    setLoading(false);
-    setDataUrl(data_url);
-    setFoodstats({ food: class_name, src: img_url, stats: nutrition_info });
-  }, []);
+  const processImage = useCallback(
+    async function (blob) {
+      setLoading(true);
+      let data_url = await blobToDataUrl(blob);
+      data_url = await resizeImage(data_url);
+      const { class_name, img_url, nutrition_info } = await inference(
+        data_url.replace(/^data:image\/\w+;base64,/, "")
+      );
+      setLoading(false);
+      setDataUrl(data_url);
+      setFoodstats({ food: class_name, src: img_url, stats: nutrition_info });
+      setUpdate((update) => !update);
+    },
+    [setUpdate]
+  );
 
   return (
     <main className="align-items-center d-flex flex-column">

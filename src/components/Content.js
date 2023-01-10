@@ -7,19 +7,24 @@ import RecentFoods from "./RecentFoods";
 export default function Content() {
   const [calorie_intake, setCalorieIntake] = useState({});
   const [recent_foods, setRecentFoods] = useState([]);
-  useEffect(function () {
-    (async function () {
-      const { recent_food, calorie_history } = await getRecentFoodAndCalories();
-      setCalorieIntake(calorie_history);
-      setRecentFoods(recent_food);
-    })();
-  }, []);
+  const [update, setUpdate] = useState(false);
+  useEffect(
+    function () {
+      (async function () {
+        const { recent_food, calorie_history } =
+          await getRecentFoodAndCalories();
+        setCalorieIntake(calorie_history);
+        setRecentFoods(recent_food);
+      })();
+    },
+    [update]
+  );
 
   return (
     <div className="d-flex gap-5 mb-5 w-100">
-      <RecentFoods />
-      <DropArea />
-      <CalorieIntake calorie_intake={calorie_intake} />
+      <RecentFoods data={recent_foods} />
+      <DropArea setUpdate={setUpdate} />
+      <CalorieIntake data={calorie_intake} />
     </div>
   );
 }
