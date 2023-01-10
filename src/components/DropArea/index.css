@@ -1,0 +1,26 @@
+#droparea-container {
+  border: 6px solid;
+}
+
+#droparea-file-input {
+  opacity: 0;
+  cursor: pointer;
+}
+
+#droparea-preview {
+  width: 272px;
+  height: 272px;
+  background-position: center center;
+  background-size: cover;
+  pointer-events: none;
+}
+
+#droparea-label {
+  transform: translate(-50%, -50%);
+  color: #3c3c3c;
+}
+
+main {
+  flex-basis: 50%;
+  max-width: 690px;
+}

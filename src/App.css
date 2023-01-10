@@ -1,0 +1,31 @@
+body {
+  background-color: #fefefe;
+}
+
+#container {
+  width: 92%;
+}
+
+#top-divider {
+  height: 3px;
+  margin-top: 0.3rem;
+}
+
+#file {
+  display: none;
+}
+
+aside {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+
+hr {
+  color: var(--bs-light);
+  background-color: var(--bs-light);
+  opacity: 1;
+}
+
+.header-brand {
+  font-size: 72px;
+}
