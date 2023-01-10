@@ -32,7 +32,7 @@ export default function RecentFood({ food, timestamp }) {
   }
 
   return (
-    <div className="border border-1 border-dark bg-white card mb-3 shadow-sm">
+    <div className="border border-1 border-dark bg-white card shadow-sm">
       <div className="align-items-center d-flex flex-column flex-xxl-row gap-2 px-3 pt-2">
         <div className="align-items-center d-flex flex-grow-1">
           <img
