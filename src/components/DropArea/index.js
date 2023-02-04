@@ -20,10 +20,7 @@ export default function DropArea({ setUpdate }) {
     async function (blob) {
       setLoading(true);
       let data_url = await blobToDataUrl(blob);
-      data_url = await resizeImage(data_url);
-      const { class_name, img_url, nutrition_info } = await inference(
-        data_url.replace(/^data:image\/\w+;base64,/, "")
-      );
+      const { class_name, img_url, nutrition_info } = await inference(data_url);
       setLoading(false);
       setDataUrl(data_url);
       setFoodstats({ food: class_name, src: img_url, stats: nutrition_info });
@@ -92,48 +89,9 @@ function blobToDataUrl(blob) {
   });
 }
 
-const MAX_SIZE = 256;
-
-/**
- * Resizes image using its data url
- *
- * @param {string} data_url
- * @returns {Promise<string>}
- */
-function resizeImage(data_url) {
-  return new Promise((resolve) => {
-    let image = new Image();
-    image.onload = function () {
-      const canvas = document.createElement("canvas");
-      let { height, width } = image;
-
-      //the operators below ensure aspect ratios are kept
-      if (width > height) {
-        if (width > MAX_SIZE) {
-          height *= MAX_SIZE / width;
-          width = MAX_SIZE;
-        }
-      } else {
-        if (height > MAX_SIZE) {
-          width *= MAX_SIZE / height;
-          height = MAX_SIZE;
-        }
-      }
-      canvas.width = MAX_SIZE;
-      canvas.height = MAX_SIZE;
-      const ctx = canvas.getContext("2d"); //define 2 dimensional rendering context
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, MAX_SIZE, MAX_SIZE);
-      ctx.drawImage(image, 0, 0, width, height);
-      resolve(canvas.toDataURL()); // this will return base64 image results after resize
-    };
-    image.src = data_url;
-  });
-}
-
 /**
  *
- * @param {string} base64str - Data URL w/o /^data:image\/\w+;base64,/
+ * @param {string} image - Data URL
  * @returns {Promise<{
  *  class_name: string,
  *  img_url: string,
@@ -154,21 +112,8 @@ function resizeImage(data_url) {
  *  >
  * }>}
  */
-async function inference(base64str) {
-  const inference_response = await fetch(
-    "https://vs744x1swk.execute-api.us-east-1.amazonaws.com/LIA_deploy",
-    {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ base64str })
-    }
-  );
-  const class_name = await inference_response.json();
-
-  const nutrition_response = await fetch(
+async function inference(image) {
+  const response = await fetch(
     "https://sv06w3n01b.execute-api.us-east-1.amazonaws.com/LIA_stage_test",
     {
       method: "POST",
@@ -176,9 +121,9 @@ async function inference(base64str) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ class_name })
+      body: JSON.stringify({ image })
     }
   );
-  const nutrition = await nutrition_response.json();
-  return { class_name, ...nutrition };
+  const json = await response.json();
+  return json;
 }
