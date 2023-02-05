@@ -22,15 +22,25 @@ export default function ChatbotFunctions() {
     [setUpdate]
   );
 
+  const addMessage = useCallback(
+    /**
+     * @param {Parameters<typeof ChatbotMessage>[0]} props
+     */
+    function (props) {
+      const messages = messages_ref.current;
+      messages.push(<ChatbotMessage key={messages.length} {...props} />);
+    },
+    []
+  );
+
   const sendMessage = useCallback(
     function (text) {
-      const messages = messages_ref.current;
-      messages.push(
-        <ChatbotMessage message={{ content: text, contentType: "PlainText" }} />
-      );
+      addMessage({
+        message: { content: text, contentType: "PlainText" }
+      });
       forceUpdate();
     },
-    [forceUpdate]
+    [addMessage, forceUpdate]
   );
 
   const recognizeText = useCallback(
@@ -45,13 +55,15 @@ export default function ChatbotFunctions() {
     },
     [sessionState]
   );
-  const handleBody = useCallback(function (body) {
-    const messages = messages_ref.current;
-    for (const message of body.messages) {
-      messages.push(<ChatbotMessage key={messages.length} message={message} />);
-    }
-    setSessionState(body.sessionState);
-  }, []);
+  const handleBody = useCallback(
+    function (body) {
+      for (const message of body.messages) {
+        addMessage({ message });
+      }
+      setSessionState(body.sessionState);
+    },
+    [addMessage]
+  );
 
   const onSubmit = useCallback(
     async function (e) {
