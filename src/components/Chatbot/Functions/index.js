@@ -2,7 +2,6 @@ import { useCallback, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import ChatbotMessage from "./Message";
-import ChatbotMessages from "./Messages";
 
 const sessionId = uuidv4();
 
@@ -17,38 +16,62 @@ export default function ChatbotFunctions() {
   const messages_ref = useRef([]);
   const [sessionState, setSessionState] = useState({});
 
-  const onSubmit = useCallback(
-    async function (e) {
-      e.preventDefault();
-      const input = input_ref.current;
-      const messages = messages_ref.current;
+  const setUpdate = useState(false)[1];
+  const forceUpdate = useCallback(
+    () => setUpdate((update) => !update),
+    [setUpdate]
+  );
 
-      const text = input.value;
+  const sendMessage = useCallback(
+    function (text) {
+      const messages = messages_ref.current;
       messages.push(
         <ChatbotMessage message={{ content: text, contentType: "PlainText" }} />
       );
-      input.value = "";
+      forceUpdate();
+    },
+    [forceUpdate]
+  );
 
+  const recognizeText = useCallback(
+    async function (text) {
       const res = await fetch("/api/recognize-text", {
         body: JSON.stringify({ sessionId, sessionState, text }),
         headers: { "Content-Type": "application/json" },
         method: "post"
       });
       const body = await res.json();
-
-      for (const message of body.messages) {
-        messages.push(
-          <ChatbotMessage key={messages.length} message={message} />
-        );
-      }
-      setSessionState(body.sessionState);
+      return body;
     },
     [sessionState]
+  );
+  const handleBody = useCallback(function (body) {
+    const messages = messages_ref.current;
+    for (const message of body.messages) {
+      messages.push(<ChatbotMessage key={messages.length} message={message} />);
+    }
+    setSessionState(body.sessionState);
+  }, []);
+
+  const onSubmit = useCallback(
+    async function (e) {
+      e.preventDefault();
+
+      const input = input_ref.current;
+      const text = input.value;
+      const body_promise = recognizeText(text);
+
+      sendMessage(text);
+      input.value = "";
+
+      handleBody(await body_promise);
+    },
+    [handleBody, recognizeText, sendMessage]
   );
 
   return (
     <>
-      <ChatbotMessages ref={messages_ref} />
+      <div className="card-body flex-grow-1 pt-0">{messages_ref.current}</div>
       <form className="card-footer px-2 py-2" onSubmit={onSubmit}>
         <div className="input-group">
           <input
