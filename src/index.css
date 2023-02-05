@@ -51,6 +51,10 @@ code {
     monospace;
 }
 
+.cursor-default {
+  cursor: default !important;
+}
+
 .bg-accent {
   background-color: var(--bs-accent) !important;
 }

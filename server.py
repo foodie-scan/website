@@ -35,12 +35,15 @@ def recognizeText():
           kwargs["sessionState"]["sessionAttributes"]["Hello"] = "World"
   except KeyError:
     pass
-  response = lex_runtime.recognize_text(**kwargs)
-  # Return all fields from response except ResponseMetadata, interpretations, & sessionId
-  return {
-    k: response[k]
-    for k in response
-    if k not in ["ResponseMetadata", "interpretations", "sessionId"]
-  }
+  lex_response = lex_runtime.recognize_text(**kwargs)
+
+  response = lex_response.copy()
+  del response["ResponseMetadata"]
+  del response["interpretations"]
+  del response["sessionId"]
+  del response["sessionState"]["dialogAction"]
+  del response["sessionState"]["intent"]
+  del response["sessionState"]["originatingRequestId"]
+  return response
 
 app.run(debug=False)

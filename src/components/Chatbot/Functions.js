@@ -7,9 +7,9 @@ const sessionId = uuidv4();
 
 export default function ChatbotFunctions() {
   /**
-   * @type {React.MutableRefObject<HTMLInputElement>}
+   * @type {React.MutableRefObject<HTMLFormElement>}
    */
-  const input_ref = useRef();
+  const form_ref = useRef();
   /**
    * @type {React.MutableRefObject<HTMLElement[]>}
    */
@@ -34,64 +34,68 @@ export default function ChatbotFunctions() {
   );
 
   const sendMessage = useCallback(
-    function (text) {
-      addMessage({
-        from_user: true,
-        message: { content: text, contentType: "PlainText" }
-      });
-      forceUpdate();
-    },
-    [addMessage, forceUpdate]
-  );
-
-  const recognizeText = useCallback(
-    async function (text) {
-      const res = await fetch("/api/recognize-text", {
+    async function (text, content) {
+      const res_promise = fetch("/api/recognize-text", {
         body: JSON.stringify({ sessionId, sessionState, text }),
         headers: { "Content-Type": "application/json" },
         method: "post"
       });
+
+      addMessage({
+        from_user: true,
+        message: { content, contentType: "PlainText" }
+      });
+      forceUpdate();
+
+      const res = await res_promise;
       const body = await res.json();
       return body;
     },
-    [sessionState]
+    [addMessage, forceUpdate, sessionState]
   );
   const handleBody = useCallback(
     function (body) {
       for (const message of body.messages) {
-        addMessage({ from_user: false, message });
+        addMessage({
+          buttonsOnClick: async function (text, value) {
+            handleBody(await sendMessage(value, text));
+          },
+          from_user: false,
+          message
+        });
       }
       setSessionState(body.sessionState);
     },
-    [addMessage]
+    [addMessage, sendMessage]
   );
 
   const onSubmit = useCallback(
     async function (e) {
       e.preventDefault();
 
-      const input = input_ref.current;
-      const text = input.value;
-      const body_promise = recognizeText(text);
-
-      sendMessage(text);
-      input.value = "";
-
-      handleBody(await body_promise);
+      const form = form_ref.current;
+      const text = new FormData(form).get("text");
+      form.reset();
+      handleBody(await sendMessage(text, text));
     },
-    [handleBody, recognizeText, sendMessage]
+    [handleBody, sendMessage]
   );
 
   return (
     <>
-      <div className="card-body flex-grow-1 pt-0">{messages_ref.current}</div>
-      <form className="card-footer px-2 py-2" onSubmit={onSubmit}>
+      <div className="card-body flex-grow-1 overflow-auto pt-0">
+        {messages_ref.current}
+      </div>
+      <form
+        className="card-footer px-2 py-2"
+        onSubmit={onSubmit}
+        ref={form_ref}
+      >
         <div className="input-group">
           <input
             className="form-control"
             name="text"
             placeholder='Say "Feedback" to start'
-            ref={input_ref}
             type="text"
           />
           <button className="btn btn-primary" type="submit">
