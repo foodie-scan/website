@@ -68,12 +68,12 @@ code {
 }
 
 .btn-solid {
-  --bs-btn-bg: hsl(var(--bs-hs), 50%);
+  --bs-btn-bg: hsl(var(--bs-hs), 54%);
   --bs-btn-border-color: var(--bs-btn-bg);
-  --bs-btn-hover-bg: hsl(var(--bs-hs), 47%);
-  --bs-btn-hover-border-color: hsl(var(--bs-hs), 44%);
+  --bs-btn-hover-bg: hsl(var(--bs-hs), 51%);
+  --bs-btn-hover-border-color: hsl(var(--bs-hs), 48%);
   --bs-btn-active-bg: var(--bs-btn-hover-border-color);
-  --bs-btn-active-border-color: hsl(var(--bs-hs), 41%);
+  --bs-btn-active-border-color: hsl(var(--bs-hs), 45%);
   --bs-btn-disabled-bg: var(--bs-btn-bg);
   --bs-btn-disabled-border-color: var(--bs-btn-bg);
 }
