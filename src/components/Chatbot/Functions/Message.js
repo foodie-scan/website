@@ -49,7 +49,7 @@ export default function ChatbotMessage({ message }) {
             <div className="d-flex flex-wrap gap-1 mx-1">
               {card.buttons.map(({ text, value }) => (
                 <button
-                  className="btn btn-primary fs-6 px-2 py-1"
+                  className="btn btn-primary btn-solid fs-6 px-2 py-1"
                   key={value}
                   onClick={() => alert(value)}
                 >
