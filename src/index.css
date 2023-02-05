@@ -73,6 +73,10 @@ code {
   border-color: var(--black) !important;
 }
 
+.card-header:first-child {
+  border-radius: 0;
+}
+
 .fw-800 {
   font-weight: 800 !important;
 }

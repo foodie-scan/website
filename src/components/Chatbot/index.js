@@ -11,14 +11,14 @@ export default function Chatbot() {
     <div className="position-fixed" id="chatbot">
       {expanded ? (
         <div
-          className="bg-white border border-2 border-accent d-flex flex-column rounded-2"
+          className="bg-white border border-2 border-accent card d-flex flex-column"
           id="chatbot-convo"
         >
           <header
-            className="align-items-center bg-accent d-flex fs-5 justify-content-between pe-4 ps-3 py-2 text-white"
+            className="align-items-center bg-accent card-header d-flex fs-5 justify-content-between pe-4 ps-3 text-white"
             data-bs-theme="dark"
           >
-            Feedback
+            <h5 className="my-1">Feedback</h5>
             <button
               className="btn btn-close btn-close-white p-0"
               onClick={() => setExpanded(false)}

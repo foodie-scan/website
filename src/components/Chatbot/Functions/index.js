@@ -49,15 +49,12 @@ export default function ChatbotFunctions() {
   return (
     <>
       <ChatbotMessages ref={messages_ref} />
-      <form
-        className="bg-light px-2 py-2 rounded-0 rounded-bottom"
-        onSubmit={onSubmit}
-      >
+      <form className="card-footer px-2 py-2" onSubmit={onSubmit}>
         <div className="input-group">
           <input
             className="form-control"
             name="text"
-            placeholder={'Say "Feedback" to start'}
+            placeholder='Say "Feedback" to start'
             ref={input_ref}
             type="text"
           />
