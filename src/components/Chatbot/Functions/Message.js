@@ -23,7 +23,9 @@ export default function ChatbotMessage({ message }) {
   let el;
   switch (message.contentType) {
     case "PlainText":
-      el = <span className="d-block">{message.content}</span>;
+      el = (
+        <div className="bg-light mt-2 px-2 py-1 rounded">{message.content}</div>
+      );
       break;
     case "ImageResponseCard":
       const card = message.imageResponseCard;
@@ -36,28 +38,32 @@ export default function ChatbotMessage({ message }) {
        * @type {JSX.Element}
        */
       el = (
-        <div className="border border-2 border-accent p-3 rounded-2">
-          <b className="mb-0">{card.title}</b>
-          {card.subtitle && <p className="mb-0">{card.subtitle}</p>}
+        <>
+          <div className="bg-light mb-1 mt-2 px-2 py-1 rounded">
+            <div>{card.title}</div>
+            {card.subtitle && (
+              <small className="d-block">{card.subtitle}</small>
+            )}
+          </div>
           {card.buttons && (
-            <div className="d-flex flex-column">
-              {card.buttons.map((b, i) => (
+            <div className="d-flex flex-wrap gap-1 mx-1">
+              {card.buttons.map(({ text, value }) => (
                 <button
-                  className="btn btn-outline-dark mt-2"
-                  key={i}
-                  type="button"
+                  className="btn btn-primary fs-6 px-2 py-1"
+                  key={value}
+                  onClick={() => alert(value)}
                 >
-                  {b.text}
+                  {text}
                 </button>
               ))}
             </div>
           )}
-        </div>
+        </>
       );
       break;
     default:
       el = JSON.stringify(message);
   }
 
-  return <div className="d-flex flex-column mb-3">{el}</div>;
+  return el;
 }
