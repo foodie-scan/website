@@ -21,7 +21,10 @@
 
 :root {
   --bs-primary: #fa8a10;
+  --bs-primary-hs: 31, 95%;
   --bs-primary-rgb: 250, 138, 16;
+  --bs-accent: #264be0;
+  --bs-accent-rgb: 38, 75, 224;
   --bs-info: #20c798;
   --bs-info-rgb: 32, 199, 152;
 
@@ -45,6 +48,25 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.bg-accent {
+  background-color: var(--bs-accent) !important;
+}
+
+.border-accent {
+  border-color: var(--bs-accent) !important;
+}
+
+.btn-primary {
+  --bs-btn-bg: hsl(var(--bs-primary-hs), 50%);
+  --bs-btn-border-color: var(--bs-btn-bg);
+  --bs-btn-hover-bg: hsl(var(--bs-primary-hs), 47%);
+  --bs-btn-hover-border-color: hsl(var(--bs-primary-hs), 44%);
+  --bs-btn-active-bg: var(--bs-btn-hover-border-color);
+  --bs-btn-active-border-color: hsl(var(--bs-primary-hs), 41%);
+  --bs-btn-disabled-bg: var(--bs-btn-bg);
+  --bs-btn-disabled-border-color: var(--bs-btn-bg);
 }
 
 .border-black {

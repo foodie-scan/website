@@ -1,0 +1,15 @@
+#chatbot {
+  bottom: 5vh;
+  right: 5%;
+}
+
+#chatbot-convo {
+  height: 500px;
+  opacity: 0.95;
+  width: 350px;
+}
+
+#chatbot-fab {
+  height: 50px;
+  width: 50px;
+}

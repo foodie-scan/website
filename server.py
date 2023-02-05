@@ -2,6 +2,7 @@ from boto3 import client
 from dotenv import load_dotenv
 from flask import Flask, render_template, request
 from os import getenv
+# from sgnlp.models.sentic_gcn import ...
 
 load_dotenv()
 AWS_REGION = getenv("AWS_REGION")

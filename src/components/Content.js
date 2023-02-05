@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CalorieIntake from "./CalorieIntake";
 import DropArea from "./DropArea";
 import RecentFoods from "./RecentFoods";
+import Chatbot from "./Chatbot";
 
 export default function Content() {
   const [calorie_intake, setCalorieIntake] = useState({});
@@ -25,6 +26,7 @@ export default function Content() {
       <DropArea setUpdate={setUpdate} />
       <CalorieIntake data={calorie_intake} />
       <RecentFoods data={recent_foods} />
+      <Chatbot />
     </div>
   );
 }
