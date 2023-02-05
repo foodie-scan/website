@@ -26,6 +26,7 @@
   --bs-accent: #264be0;
   --bs-accent-rgb: 38, 75, 224;
   --bs-info: #20c798;
+  --bs-info-hs: 163, 72%;
   --bs-info-rgb: 32, 199, 152;
 
   --bs-black: #060606;
@@ -58,6 +59,10 @@ code {
   border-color: var(--bs-accent) !important;
 }
 
+.btn-info {
+  --bs-hs: var(--bs-info-hs);
+}
+
 .btn-primary {
   --bs-hs: var(--bs-primary-hs);
 }
@@ -83,4 +88,12 @@ code {
 
 .fw-800 {
   font-weight: 800 !important;
+}
+
+.max-w-75 {
+  max-width: 75%;
+}
+
+.w-fit {
+  width: fit-content;
 }

@@ -36,6 +36,7 @@ export default function ChatbotFunctions() {
   const sendMessage = useCallback(
     function (text) {
       addMessage({
+        from_user: true,
         message: { content: text, contentType: "PlainText" }
       });
       forceUpdate();
@@ -58,7 +59,7 @@ export default function ChatbotFunctions() {
   const handleBody = useCallback(
     function (body) {
       for (const message of body.messages) {
-        addMessage({ message });
+        addMessage({ from_user: false, message });
       }
       setSessionState(body.sessionState);
     },

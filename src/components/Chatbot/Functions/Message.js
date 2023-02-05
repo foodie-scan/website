@@ -1,5 +1,8 @@
+import { useMemo } from "react";
+
 /**
  * @param {{
+ *  from_user: boolean,
  *  message: {
  *    content: string,
  *    contentType: "PlainText"
@@ -16,7 +19,16 @@
  *  }
  * }} props
  */
-export default function ChatbotMessage({ message }) {
+export default function ChatbotMessage({ from_user, message }) {
+  const class_names = useMemo(
+    function () {
+      return from_user
+        ? { container: "ms-auto", message_bg: "info" }
+        : { container: "me-auto", message_bg: "light" };
+    },
+    [from_user]
+  );
+
   /**
    * @type {JSX.Element}
    */
@@ -24,7 +36,9 @@ export default function ChatbotMessage({ message }) {
   switch (message.contentType) {
     case "PlainText":
       el = (
-        <div className="bg-light mt-2 px-2 py-1 rounded">{message.content}</div>
+        <div className={`mt-2 px-2 py-1 rounded bg-${class_names.message_bg}`}>
+          {message.content}
+        </div>
       );
       break;
     case "ImageResponseCard":
@@ -39,7 +53,7 @@ export default function ChatbotMessage({ message }) {
        */
       el = (
         <>
-          <div className="bg-light mb-1 mt-2 px-2 py-1 rounded">
+          <div className="bg-light mb-1 mt-2 px-2 py-1 rounded w-fit">
             <div>{card.title}</div>
             {card.subtitle && (
               <small className="d-block">{card.subtitle}</small>
@@ -49,7 +63,7 @@ export default function ChatbotMessage({ message }) {
             <div className="d-flex flex-wrap gap-1 mx-1">
               {card.buttons.map(({ text, value }) => (
                 <button
-                  className="btn btn-primary btn-solid fs-6 px-2 py-1"
+                  className="btn btn-info btn-solid fs-6 px-2 py-1"
                   key={value}
                   onClick={() => alert(value)}
                 >
@@ -65,5 +79,5 @@ export default function ChatbotMessage({ message }) {
       el = JSON.stringify(message);
   }
 
-  return el;
+  return <div className={`max-w-75 w-fit ${class_names.container}`}>{el}</div>;
 }
