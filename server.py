@@ -41,8 +41,6 @@ def recognizeText():
   del response["ResponseMetadata"]
   del response["interpretations"]
   del response["sessionId"]
-  del response["sessionState"]["dialogAction"]
-  del response["sessionState"]["intent"]
   del response["sessionState"]["originatingRequestId"]
   return response
 
